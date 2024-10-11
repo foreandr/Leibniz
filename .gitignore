@@ -1,0 +1,14 @@
+# Ignore CSV files
+*.csv
+
+# Ignore PDF files
+*.pdf
+
+/venv
+/__pycache__
+/python/__pycache__
+/.vs
+/.vscode
+/logs
+/downloader
+apps/**/__pycache__/
