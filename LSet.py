@@ -80,18 +80,35 @@ class Set:
         return len(self.elements)
 
 
-# Step 1: Define core and global sets for each mathematical structure
+# Empty Set
 empty_set = Set([], [])
-natural_numbers = Set(list(range(1, 101)), list(range(1, 2501)))
-integers = Set(list(range(-50, 51)), list(range(-1250, 1251)))
-rational_numbers = Set([Fraction(p, q) for p in range(-10, 11) for q in range(1, 11) if q != 0],
-                       [Fraction(p, q) for p in range(-50, 51) for q in range(1, 51) if q != 0])
-real_numbers = Set([round(x * 0.01, 2) for x in range(-10000, 10001)], 
-                   [round(x * 0.01, 4) for x in range(-250000, 250001)])
-complex_numbers = Set([complex(r, i) for r in range(-10, 11) for i in range(-10, 11)],
-                      [complex(r, i) for r in range(-50, 51) for i in range(-50, 51)])
 
-# Other sets with larger global sets
+# Natural Numbers
+natural_numbers = Set(list(range(1, 101)), list(range(1, 2501)))
+
+# Integers
+integers = Set(list(range(-50, 51)), list(range(-1250, 1251)))
+integers_even = Set(list(range(-100, 101, 2)), list(range(-2500, 2501, 2)))
+
+# Rational Numbers
+#rational_numbers = Set(
+#    [Fraction(p, q) for p in range(-10, 11) for q in range(1, 11) if q != 0],
+#    [Fraction(p, q) for p in range(-50, 51) for q in range(1, 51) if q != 0]
+#)
+
+# Real Numbers
+real_numbers = Set(
+    [round(x * 0.01, 2) for x in range(-100, 101)], 
+    [round(x * 0.01, 4) for x in range(-250000, 250001)]
+)
+
+# Complex Numbers
+complex_numbers = Set(
+    [complex(r, i) for r in range(-10, 11) for i in range(-10, 11)],
+    [complex(r, i) for r in range(-50, 51) for i in range(-50, 51)]
+)
+
+# Irrational Numbers
 irrational_numbers = Set(
     [round(2**0.5 * i, 2) for i in range(1, 11)] +
     [round(3.14159 * i, 2) for i in range(1, 11)] +
@@ -108,8 +125,48 @@ algebraic_numbers = Set(
     [round(x**0.5, 2) for x in range(1, 1251)] + [round(x**(1/3), 2) for x in range(1, 1251)]
 )
 
-# Print a sample to verify structure
-#print(natural_numbers)
-#print(integers)
-#print(rational_numbers)
-#print(real_numbers)
+# Transcendental Numbers
+transcendental_numbers = Set(
+    [round(3.14159 * i, 2) for i in range(1, 51)] + [round(2.71828 * i, 2) for i in range(1, 51)],
+    [round(3.14159 * i, 2) for i in range(1, 2501)] + [round(2.71828 * i, 2) for i in range(1, 2501)]
+)
+
+# Prime Numbers
+prime_numbers = Set(
+    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97],
+    [x for x in range(2, 1251) if all(x % d != 0 for d in range(2, int(x**0.5) + 1))]
+)
+
+# Even Numbers
+natural_even_numbers = Set(list(range(2, 101, 2)), list(range(2, 2501, 2)))
+natural_numbers_with_0 = Set(list(range(0, 101, 2)), list(range(0, 2501, 2)))
+
+
+
+# Odd Numbers
+odd_numbers = Set(list(range(1, 100, 2)), list(range(1, 2500, 2)))
+
+# Pauli Spinors
+pauli_spinors = Set([(1, 0), (0, 1), (1, 1), (-1, 1)], [(1, 0), (0, 1), (1, 1), (-1, 1)])
+
+# Dirac Spinors
+dirac_spinors = Set(
+    [tuple(np.random.randn(4) + 1j * np.random.randn(4)) for _ in range(20)], 
+    [tuple(np.random.randn(4) + 1j * np.random.randn(4)) for _ in range(2500)]
+)
+
+# Vectors in 2D, 3D, and 4D space
+vectors_2d = Set([tuple(np.random.randint(-50, 50, 2)) for _ in range(100)],
+                 [tuple(np.random.randint(-250, 250, 2)) for _ in range(2500)])
+
+vectors_3d = Set([tuple(np.random.randint(-50, 50, 3)) for _ in range(100)],
+                 [tuple(np.random.randint(-250, 250, 3)) for _ in range(2500)])
+
+vectors_4d = Set([tuple(np.random.randint(-50, 50, 4)) for _ in range(100)],
+                 [tuple(np.random.randint(-250, 250, 4)) for _ in range(2500)])
+
+# Spacetime Points
+spacetime_points = Set(
+    [tuple(np.random.randint(-50, 50, 4)) for _ in range(100)], 
+    [tuple(np.random.randint(-250, 250, 4)) for _ in range(2500)]
+)
