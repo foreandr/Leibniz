@@ -121,41 +121,21 @@ class Group:
             failed_checks.append(f"[failures:{failures}]: No inverses for elements: [{len(failed_inverses)}] {failed_inverses[:5]}... (Inverse Check Time: {inverse_time:.4f} seconds)")
 
         # Display individual timings for each property check
-        timing_summary = (f"\nProperty Check Times:\n"
-                          f"Closure Time: {closure_time:.4f} seconds\n"
-                          f"Associativity Time: {assoc_time:.4f} seconds\n"
-                          f"Identity Check Time: {identity_time:.4f} seconds\n"
-                          f"Inverse Check Time: {inverse_time:.4f} seconds\n")
+        timing_summary = (f"Property Check Times:\n"
+                        f"Closure Time: {closure_time:.4f} seconds\n"
+                        f"Associativity Time: {assoc_time:.4f} seconds\n"
+                        f"Identity Check Time: {identity_time:.4f} seconds\n"
+                        f"Inverse Check Time: {inverse_time:.4f} seconds")
 
         if failed_checks:
             return False, f"Fails:\n{'\n'.join(failed_checks)}\n{timing_summary}"
         
         return True, f"This set satisfies all group axioms with identity element: {identity}.\n{timing_summary}"
 
-
-
-# Test 1: Integers under Addition
-#group_example1 = Group(LSet.integers, LOperations.addition)
-#group_status1, message1 = group_example1.is_group()
-#print(f"Group Status for Integers under Addition: {group_status1}")
-#print(f"Message: {message1}\n")
-
-# Test 2: Even Numbers under Addition
-#group_example2 = Group(LSet.even_numbers, LOperations.addition)
-#group_status2, message2 = group_example2.is_group()
-#print(f"Group Status for Even Numbers under Addition: {group_status2}")
-#print(f"Message: {message2}\n")
-
-#group_example21 = Group(LSet.integers_even, LOperations.addition)
-#group_status21, message21 = group_example21.is_group()
-#print(f"Group Status for  under Addition: {group_status21}")
-#print(f"Message: {message21}\n")
-
-# Test 4: Real Numbers under Addition
-group_example4 = Group(LSet.real_numbers, LOperations.addition)
-group_status4, message4 = group_example4.is_group()
-print(f"Group Status for Real Numbers under Addition: {group_status4}")
-print(f"Message: {message4}\n")
+vectors_3d_group = Group(LSet.vectors_3d, LOperations.vector_addition)
+print(f"Group Status for Real Numbers under Addition: {vectors_3d_group}")
+print("vectors_3d_group.is_group()", vectors_3d_group.is_group())
+# print(f"Message: {message4}\n")
 exit()
 
 # Test 5: Complex Numbers under Addition

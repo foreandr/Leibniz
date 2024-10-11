@@ -36,8 +36,10 @@ def scalar_multiplication(scalar, vector):
     return np.round(np.multiply(scalar, vector), 2)
 
 def vector_addition(v1, v2):
-    """Add two vectors."""
-    return np.round(np.add(v1, v2), 2)
+    """Add two vectors and return a tuple with standard Python types and rounded values."""
+    result = np.round(np.add(v1, v2), 2)  # Perform addition and round to 2 decimal places
+    # Convert numpy array to a tuple of standard Python float types
+    return tuple(float(x) for x in result)
 
 # ----- Matrix Operations -----
 def matrix_addition(m1, m2):
@@ -100,10 +102,10 @@ def apply_operation(element1, element2, operation):
     """Router to apply an operation based on element type."""
     if isinstance(element1, (list, tuple, np.ndarray)) and isinstance(element2, (list, tuple, np.ndarray)):
         if len(element1) == 2 and len(element2) == 2:  # Spinor-like
-            return pauli_spinor_multiplication(element1, element2)
+            return tuple(pauli_spinor_multiplication(element1, element2))
         elif len(element1) == 4 and len(element2) == 4:  # Dirac Spinor-like
-            return dirac_spinor_multiplication(element1, element2)
+            return tuple(dirac_spinor_multiplication(element1, element2))
         else:
-            return np.round(operation(element1, element2), 2)
+            return operation(element1, element2)
     else:
-        return round(operation(element1, element2), 2)
+        return operation(element1, element2)

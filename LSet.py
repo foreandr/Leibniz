@@ -159,8 +159,10 @@ dirac_spinors = Set(
 vectors_2d = Set([tuple(np.random.randint(-50, 50, 2)) for _ in range(100)],
                  [tuple(np.random.randint(-250, 250, 2)) for _ in range(2500)])
 
-vectors_3d = Set([tuple(np.random.randint(-50, 50, 3)) for _ in range(100)],
-                 [tuple(np.random.randint(-250, 250, 3)) for _ in range(2500)])
+vectors_3d = Set(
+    [tuple(round(np.random.uniform(-10, 10), 2) for _ in range(3)) for _ in range(10)],
+    [tuple(round(np.random.uniform(-250, 250), 2) for _ in range(3)) for _ in range(2500)]
+)
 
 vectors_4d = Set([tuple(np.random.randint(-50, 50, 4)) for _ in range(100)],
                  [tuple(np.random.randint(-250, 250, 4)) for _ in range(2500)])
