@@ -98,8 +98,8 @@ integers_even = Set(list(range(-100, 101, 2)), list(range(-2500, 2501, 2)))
 
 # Real Numbers
 real_numbers = Set(
-    [round(x * 0.01, 2) for x in range(-100, 101)], 
-    [round(x * 0.01, 4) for x in range(-250000, 250001)]
+    [round(x * 0.01, 2) for x in range(-20, 21)], 
+    [round(x * 0.01, 4) for x in range(-250, 251)]
 )
 
 # Complex Numbers
