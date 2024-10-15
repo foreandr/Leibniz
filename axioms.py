@@ -173,3 +173,33 @@ Axiom_of_Tarski_Universe = [
     logic_axioms["Universal Instantiation"],
     logic_axioms["Modus Ponens"]
 ]
+
+Axiom_of_Open_Sets_Global = [
+    logic_axioms["Existential Generalization"],  # Ensures the existence of open sets
+    logic_axioms["Universal Generalization"],    # Union of open sets is open
+    logic_axioms["Implication"],                 # Finite intersection of open sets is open
+    logic_axioms["Conjunction"]                  # Logical consistency for open sets
+]
+
+Axiom_of_Open_Set_Local = [
+    logic_axioms["Existential Generalization"],  # There exists an open set containing the point
+    logic_axioms["Universal Instantiation"]      # Each point belongs to at least one open set
+]
+
+Axiom_of_Closed_Sets = [
+    logic_axioms["Negation Introduction"],       # Closed sets are complements of open sets
+    logic_axioms["Existential Generalization"],  # Ensures closed sets exist (complements of open sets)
+    logic_axioms["Universal Generalization"],    # Applies universally to all open sets
+    logic_axioms["Conjunction"]                  # Ensures logical consistency for complements
+]
+
+Axiom_of_Union_Closed = [
+    logic_axioms["Universal Generalization"],   # For any collection of open sets
+    logic_axioms["Disjunction Introduction"]    # The union of any collection of open sets is also open
+]
+
+Axiom_of_Intersection_Closed = [
+    logic_axioms["Universal Generalization"],   # Finite intersections of open sets are closed
+    logic_axioms["Conjunction"]                 # Combine finite sets via intersections
+]
+
