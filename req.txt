@@ -1,5 +1,0 @@
-numpy
-sympy
-jupyterlab
-jupyter
-rich
