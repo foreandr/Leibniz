@@ -134,14 +134,50 @@ class Atlas:
         self.is_time_like = chart.is_time_like
 
 class Metric:
-    def __init__(self, is_defined=True, is_positive_definite=True, is_smooth=True):
-        self.is_defined = is_defined               # Is the metric defined on the manifold?
+    def __init__(self, is_defined=True, is_positive_definite=True, is_smooth=True,
+                 is_flat=False, has_curvature=False, is_conformal=False,
+                 is_anisotropic=False, is_discrete=False, satisfies_strong_triangle_inequality=False):
+        self.is_defined = is_defined  # Is the metric defined on the manifold?
         self.is_positive_definite = is_positive_definite  # Is the metric positive-definite?
-        self.is_smooth = is_smooth                 # Is the metric smoothly varying?
+        self.is_smooth = is_smooth  # Is the metric smoothly varying?
+        self.is_flat = is_flat  # Is the space flat (zero curvature)?
+        self.has_curvature = has_curvature  # Does the space have curvature?
+        self.is_conformal = is_conformal  # Does the metric preserve angles (conformal)?
+        self.is_anisotropic = is_anisotropic  # Does the metric depend on direction (anisotropic)?
+        self.is_discrete = is_discrete  # Is the metric defined on a discrete space?
+        self.satisfies_strong_triangle_inequality = satisfies_strong_triangle_inequality  # Is the strong triangle inequality satisfied?
+    
+    def metric_type(self):
+        if self.is_positive_definite and self.is_smooth and self.is_flat:
+            return "Euclidean Metric"
+        elif self.is_positive_definite and self.is_smooth and self.has_curvature:
+            return "Riemannian Metric"
+        elif not self.is_positive_definite and self.is_smooth and self.has_curvature:
+            return "Pseudo-Riemannian Metric"
+        elif not self.is_positive_definite and self.is_smooth and self.is_flat:
+            return "Minkowski Metric"
+        elif not self.is_positive_definite and self.is_smooth and self.has_curvature:
+            return "Lorentzian Metric"
+        elif self.is_positive_definite and not self.is_smooth and self.is_anisotropic:
+            return "Finsler Metric"
+        elif self.is_positive_definite and self.is_smooth and not self.is_conformal:
+            return "Weyl Metric"
+        elif self.is_positive_definite and self.is_smooth and self.is_conformal:
+            return "Conformal Metric"
+        elif self.is_positive_definite and not self.is_smooth and self.satisfies_strong_triangle_inequality:
+            return "Ultrametric"
+        elif self.is_positive_definite and not self.is_smooth and self.is_discrete:
+            return "Hamming Metric"
+        else:
+            return "Unknown Metric Type"
+
 
 class Manifold:
     def __init__(self, topology: Topology, atlas: Atlas, metric: Metric = None,
-                 is_singular=False, is_Lie=False):
+                 is_singular=False, is_Lie=False, is_oriented=True, is_compact=False,
+                 has_boundary=False, is_connected=True, is_hyperbolic=False, 
+                 is_analytic=False, is_symplectic=False, is_complex=False, 
+                 is_Kähler=False, is_flat=False):
         self.topology = topology                      # Instance of the Topology class
         self.atlas = atlas                            # Instance of the Atlas class
         self.metric = metric                          # Instance of the Metric class (optional)
@@ -151,21 +187,118 @@ class Manifold:
         self.is_complex = atlas.is_complex
         # Manifold-specific properties
         self.is_topological = True                    # Manifold is at least a topological manifold
-        self.is_Riemannian = False                    # Initialize as False
-        if (self.metric and self.metric.is_defined and
-            self.metric.is_positive_definite and
-            self.metric.is_smooth):
-            self.is_Riemannian = True                 # Manifold is Riemannian if metric satisfies conditions
         self.is_singular = is_singular                # Is the manifold singular?
         self.is_Lie = is_Lie                          # Is the manifold a Lie group?
+        self.is_oriented = is_oriented                # Is the manifold oriented?
+        self.is_compact = is_compact                  # Is the manifold compact?
+        self.has_boundary = has_boundary              # Does the manifold have a boundary?
+        self.is_connected = is_connected              # Is the manifold connected?
+        self.is_hyperbolic = is_hyperbolic            # Is the manifold hyperbolic?
+        self.is_analytic = is_analytic                # Is the manifold analytic?
+        self.is_symplectic = is_symplectic            # Is the manifold symplectic?
+        self.is_Kähler = is_Kähler                    # Is the manifold a Kähler manifold?
+        self.is_flat = is_flat                        # Is the manifold flat (zero curvature)?
 
-class ProjectionMap:
-    def __init__(self, is_defined=True, is_smooth=True, is_continuous=True, is_surjective=True, is_open_map=False):
-        self.is_defined = is_defined          # Is the projection map defined?
-        self.is_smooth = is_smooth            # Is the projection map smooth?
-        self.is_continuous = is_continuous    # Is the projection map continuous?
-        self.is_surjective = is_surjective    # Is the projection map surjective?
-        self.is_open_map = is_open_map        # Is the projection map an open map?
+    def manifold_type(self):
+        # Determine the type of manifold based on the properties of the metric, atlas, and topology
+        
+        # Riemannian and Pseudo-Riemannian
+        if self.metric:
+            if self.metric.is_defined and self.metric.is_positive_definite and self.metric.is_smooth:
+                return "Riemannian Manifold"
+            elif self.metric.is_defined and not self.metric.is_positive_definite and self.metric.is_smooth:
+                return "Pseudo-Riemannian Manifold"
+        
+        # Specific types of manifolds
+        if self.is_Lie and self.is_smooth:
+            return "Lie Group"
+        if self.is_complex and self.is_smooth and self.is_Kähler:
+            return "Kähler Manifold"
+        if self.is_complex and self.is_smooth and not self.is_Kähler:
+            return "Complex Manifold"
+        if self.is_symplectic and self.is_smooth:
+            return "Symplectic Manifold"
+        if self.is_hyperbolic and self.is_smooth:
+            return "Hyperbolic Manifold"
+        if self.is_flat and not self.is_curved():
+            return "Flat Manifold"
+        if self.is_smooth and self.is_oriented and not self.is_complex:
+            return "Smooth Oriented Manifold"
+        if self.is_analytic and self.is_smooth:
+            return "Analytic Manifold"
+        if self.is_singular:
+            return "Singular Manifold"
+        if self.is_connected and not self.is_singular:
+            return "Connected Manifold"
+        if not self.is_connected:
+            return "Disconnected Manifold"
+        if not self.is_smooth and not self.is_differentiable:
+            return "Topological Manifold"
+        
+        return "Unknown Manifold Type"
+    
+    def is_curved(self):
+        # Helper function to check if the manifold has curvature (if it's not flat)
+        if self.metric and not self.is_flat:
+            return True
+        return False
+
+class DifferentiableManifold(Manifold):
+    def __init__(self, topology: Topology, atlas: Atlas, metric: Metric = None,
+                 is_oriented=True, is_compact=False, has_boundary=False,
+                 is_connected=True, is_singular=False, is_Lie=False,
+                 is_hyperbolic=False, is_analytic=False, is_symplectic=False,
+                 is_complex=False, is_Kähler=False, is_flat=False):
+        # Call the parent class Manifold to initialize common properties
+        super().__init__(topology, atlas, metric, is_singular, is_Lie, is_oriented,
+                         is_compact, has_boundary, is_connected, is_hyperbolic,
+                         is_analytic, is_symplectic, is_complex, is_Kähler, is_flat)
+        # Additional properties specific to differentiable manifolds
+        self.is_smooth = True           # Differentiable manifolds must be smooth
+        self.is_differentiable = True   # Differentiable manifolds are differentiable
+        
+    def manifold_type(self):
+        # Use the inherited manifold_type method and extend it for differentiable manifolds
+        base_type = super().manifold_type()
+        
+        # Further classify the differentiable manifold
+        if self.is_symplectic:
+            return "Symplectic Differentiable Manifold"
+        if self.is_Kähler:
+            return "Kähler Differentiable Manifold"
+        if self.is_complex:
+            return "Complex Differentiable Manifold"
+        if self.is_analytic:
+            return "Analytic Differentiable Manifold"
+        if self.is_flat:
+            return "Flat Differentiable Manifold"
+        if self.is_hyperbolic:
+            return "Hyperbolic Differentiable Manifold"
+        
+        # If it's just smooth and differentiable but doesn't fit into the specialized categories
+        return f"Differentiable {base_type}"
+
+
+class Map:
+    def __init__(self, is_injective=False, is_surjective=False,
+                 is_continuous=False, is_smooth=False, is_open_map=False):
+        self.is_injective = is_injective
+        self.is_surjective = is_surjective
+        self.is_continuous = is_continuous  # Is the map continuous?
+        self.is_smooth = is_smooth  # Is the map smooth?
+        self.is_open_map = is_open_map  # Is the map an open map?
+        self.is_bijective = self.is_injective and self.is_surjective  # Bijective if both injective and surjective
+
+class ProjectionMap(Map):
+    def __init__(self, is_defined=True, is_continuous=True, is_smooth=True, is_open_map=False):
+        super().__init__(
+            is_injective=False,  # Projection maps are not injective
+            is_surjective=True,  # Projection maps are surjective
+            is_continuous=is_continuous,
+            is_smooth=is_smooth,
+            is_open_map=is_open_map
+        )
+        self.is_defined = is_defined  # Is the projection map defined?
 
 class Fiber:
     def __init__(self, space, dimension=None):
@@ -268,13 +401,7 @@ metric = Metric(is_defined=True, is_positive_definite=True, is_smooth=True)
 # Create a manifold using the atlas
 manifold = Manifold(topology=topology, atlas=atlas, metric=metric)
 
-projection_map = ProjectionMap(
-    is_defined=True,
-    is_smooth=manifold.is_smooth,            # Projection map is smooth if manifold is smooth
-    is_continuous=True,
-    is_surjective=True,
-    is_open_map=True
-)
+projection_map = ProjectionMap(is_defined=True, is_continuous=True, is_smooth=True)
 
 total_space = TotalSpace(
     base_space=manifold,
