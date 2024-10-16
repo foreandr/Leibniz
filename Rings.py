@@ -5,24 +5,18 @@ class Ring(Set):
         super().__init__(binary_operations)
 
     def classify(self):
-        """Further classification for Ring if needed"""
+        """Further classification for Ring, Division Ring, or Field"""
         addition_op, multiplication_op = self.binary_operations
 
-        # Lazy import of Field to avoid circular import issues
+        # Check for Field: Both operations must be commutative, and multiplication must be invertible
         if addition_op.commutativity and multiplication_op.commutativity and multiplication_op.invertibility:
             from Fields import Field
             return Field(self.binary_operations).classify()
 
-        # Check if it qualifies as a Division Ring
-        if multiplication_op.invertibility and multiplication_op.associativity:
-            return DivisionRing(self.binary_operations).classify()
+        # Check for Skew Field (Division Ring): Multiplication is invertible, but not commutative
+        if multiplication_op.invertibility and not multiplication_op.commutativity:
+            from Fields import SkewField
+            return SkewField(self.binary_operations).classify()
 
+        # If it's not a Field or Skew Field, it's just a Ring
         return "Ring"
-    
-class DivisionRing(Ring):
-    def __init__(self, binary_operations=None):
-        super().__init__(binary_operations)
-
-    def classify(self):
-        """Terminal classification for Division Ring (non-commutativity Field)"""
-        return "Division Ring"
