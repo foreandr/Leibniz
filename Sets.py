@@ -84,3 +84,60 @@ class Set:
             return f"Set with binary operations: {', '.join(ops_descriptions)}"
         else:
             return "Set with no binary operations"
+
+class PowerSet(Set):
+    def __init__(self):
+        """
+        PowerSet class that inherits from Set.
+        """
+        super().__init__()
+
+    def __str__(self):
+        """
+        String representation of the PowerSet class.
+        """
+        return "This is a PowerSet of a set, containing all possible subsets."
+
+class Subset(Set):
+    def __init__(self, parent_set, has_parent_set=False, has_empty_set=False, topology_intersection_axiom=False, topology_union_axiom=False):
+        """
+        Subset class that inherits from Set and represents a subset of a given set.
+        :param parent_set: The set (or power set) from which this is a subset.
+        :param has_parent_set: Boolean indicating if the subset contains the parent set.
+        :param has_empty_set: Boolean indicating if the subset contains the empty set.
+        :param topology_intersection_axiom: Boolean indicating if the intersection axiom holds.
+        :param topology_union_axiom: Boolean indicating if the union axiom holds.
+        """
+        super().__init__()
+        self.parent_set = parent_set
+        self.has_parent_set = has_parent_set
+        self.has_empty_set = has_empty_set
+        self.topology_intersection_axiom = topology_intersection_axiom
+        self.topology_union_axiom = topology_union_axiom
+
+    def classify(self):
+        """
+        Classifies the subset as a Topology if all necessary axioms are satisfied and if the parent set is a PowerSet.
+        :return: A Topology object if the axioms are satisfied and the parent set is a PowerSet.
+        """
+        if isinstance(self.parent_set, PowerSet):  # Check if the parent set is of type PowerSet
+            if self.has_parent_set and self.has_empty_set:
+                if self.topology_intersection_axiom and self.topology_union_axiom:
+                    from Topology import Topology
+                    return Topology().classify()  # Recursively classify as a Group
+                else:
+                    return "This subset does not satisfy the union or intersection axioms."
+            else:
+                return "This subset does not satisfy the parent set or empty set axioms."
+        else:
+            return "This subset's parent set is not a PowerSet."
+
+    def __str__(self):
+        """
+        String representation of the Subset class, including whether it satisfies the intersection and union axioms.
+        """
+        return (f"This is a Subset of the set: {self.parent_set}\n"
+                f"Contains parent set: {self.has_parent_set}\n"
+                f"Contains empty set: {self.has_empty_set}\n"
+                f"Respects intersection axiom: {self.topology_intersection_axiom}\n"
+                f"Respects union axiom: {self.topology_union_axiom}")
